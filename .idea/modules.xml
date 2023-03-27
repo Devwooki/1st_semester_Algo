@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/02-Off/02-Off.iml" filepath="$PROJECT_DIR$/02-Off/02-Off.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/04-Algorithm.iml" filepath="$PROJECT_DIR$/.idea/04-Algorithm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../DebugTest_Sample/Sample_city_ban_name/Sample_city_ban_name.iml" filepath="$PROJECT_DIR$/../DebugTest_Sample/Sample_city_ban_name/Sample_city_ban_name.iml" />
+    </modules>
+  </component>
+</project>
