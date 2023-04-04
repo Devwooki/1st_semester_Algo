@@ -19,12 +19,13 @@ public class BOJ2239 {
         }
 
         dfs(0);
+        print();
         System.out.println(sb);
     }
 
     static void dfs(int depth){
         if(depth == 81) {
-            print();
+
             end = true;
             return;
         }
@@ -35,17 +36,29 @@ public class BOJ2239 {
         if(sudoku[y][x] != 0){//0이 아니면 값이 있으니 패스
             dfs(depth+1);
         }else{//0일경우 가로, 세로, 작은 사각형을 체크해야한다.
-            visited = new boolean[10];
-            checkNumbers(x, y);
+//            visited = new boolean[10];
+//            checkNumbers(x, y);
+//
+//            for(int i=1 ; i <= 9 ; ++i){
+//                if(visited[i]) continue;
+//
+//                sudoku[y][x] = i;
+//                dfs(depth+1);
+//                if(end) return;
+//                sudoku[y][x] = 0;
+//            }
+            //visited을 체크하는 과정에서 매번 visited가 dfs 재귀마다 변경됨 -> 다른 방식으로 처리
+            for(int i =  1 ; i <= 9 ; ++i){
+                if(!checkNumbers2(x, y, i)){//값이 없을 때 dfs 실시
 
-            for(int i=1 ; i <= 9 ; ++i){
-                if(visited[i]) continue;
+                    sudoku[y][x] = i;
+                    dfs(depth + 1);
+                    if(end) return;
+                    sudoku[y][x] = 0;
 
-                sudoku[y][x] = i;
-                dfs(depth+1);
-                if(end) return;
-                sudoku[y][x] = 0;
+                }
             }
+
         }
     }
 
@@ -56,6 +69,21 @@ public class BOJ2239 {
             }
             sb.append("\n");
         }
+    }
+
+    static boolean checkNumbers2(int x, int y, int n){
+        //가로, 세로 열부터 체크한다.
+        for(int i = 0 ; i < 9 ; ++i){
+            if(sudoku[y][i] == n || sudoku[i][x] == n) return true;
+        }
+        int newX = x/3 * 3;
+        int newY = y/3 * 3;
+        for(int i = newY; i < newY + 3 ; ++i ){
+            for(int j = newX ; j < newX + 3 ; ++j){
+                if(sudoku[i][j] == n) return true;
+            }
+        }
+        return false;
     }
     static void checkNumbers(int x, int y){
         //가로, 세로를 체크한다
