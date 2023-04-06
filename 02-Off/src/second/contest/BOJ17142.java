@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 import java.util.List;
 
-public class BOJ17141 {
+public class BOJ17142 {
     static int N, M, result=Integer.MAX_VALUE;
     static int[][] map;
     static int[][] copyMap;
@@ -25,14 +25,14 @@ public class BOJ17141 {
             for(int j = 0 ; j < N ; ++j){
                 map[i][j] = Integer.parseInt(st.nextToken());
                 if(map[i][j]==2) {
-                    map[i][j] = 0;
+                    map[i][j] = -2;
                     viruses.add(new Virus(j, i, 0));
                 }else if(map[i][j] == 1) map[i][j] = -1;
             }
         }
 
         nCr(0,0);
-        System.out.println(result != Integer.MAX_VALUE? result : -1);
+
     }
 
     //바이러스를 배치할 조합 탐색
@@ -54,14 +54,15 @@ public class BOJ17141 {
         }
         //조합에 따라서 바이러스를 재배치한다.
         for(int i = 0 ; i < M ; ++i) {
-            copyMap[viruses.get(numbers[i]).y][viruses.get(numbers[i]).x] = -2;
+            copyMap[viruses.get(numbers[i]).y][viruses.get(numbers[i]).x] = 2;
+            //  2 : 활성 바이러스
+            // -2 : 비활성 바이러스;
         }
         //배치가 끝나면 bfs탐색 실시
         bfs();
     }
 
     private static void bfs() {
-        //visited = new boolean[N][N];
         Queue<Virus> q = new LinkedList<>();
         for(int num : numbers) q.offer(viruses.get(num));
 
@@ -75,7 +76,7 @@ public class BOJ17141 {
                 int ny = v.y + dir[i][1];
                 if(!checkRange(nx, ny)) continue; //좌표 유효성 체크
 
-                //벽은-1, 바이러스 위치는 -2
+                //활성 바이러스 = 2, 비활성 -2
                 if(copyMap[ny][nx] == 0){ //방문하지 않은 곳만 탐색
                     copyMap[ny][nx] = v.cnt+1;
                     q.offer(new Virus(nx, ny, v.cnt+1));

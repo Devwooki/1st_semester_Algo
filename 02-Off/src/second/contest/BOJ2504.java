@@ -18,12 +18,45 @@ public class BOJ2504 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Stack<Character> stack = new Stack();
 		String cmd = br.readLine();
-		
+		int result = 0;
+
+		int temp = 1;
+		boolean flag= true;
 		for(int i = 0 ; i < cmd.length();++i) {
 			char c = cmd.charAt(i);
+
+			if(c == '(' || c == '[')  {
+				stack.push(c);
+				temp *=  (c=='(') ? 2 : 3;
+				continue;
+			}
+
+
+			else if(c == ')'){
+				if(stack.isEmpty() || stack.peek() != '('){
+					flag = false;
+					break;
+				}
+				if(cmd.charAt(i-1) == '(') result += temp;
+
+				stack.pop();
+				temp /=2;
+			}else if(c == ']'){
+				if(stack.isEmpty() || stack.peek() != '[') {
+					flag = false;
+					break;
+				}
+				if(cmd.charAt(i-1) == '[') result += temp;
+
+				stack.pop();
+				temp /=3;
+			}
+
+
 		}
 		
-		
+		if(!stack.isEmpty() || !flag) System.out.println(0);
+		else System.out.println(result);
 		
 	}
 }
