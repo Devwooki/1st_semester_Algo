@@ -40,25 +40,19 @@ public class 문자열압축 {
     private static int zip(String str, int len) {
         int textLength = str.length();;
         StringBuilder sb = new StringBuilder();
-        if(textLength == 1) return 1;
-        String prev = "";
+
+        String prev = str.substring(0, len);
         int cnt = 1;
-        for(int i = 0 ; i < textLength ; i += len){
-            String now = "";
-            if(i + len < textLength) now = str.substring(i, len + i);
-            else now = str.substring(i, textLength);
+        for(int i = len ; i < textLength ; i += len){
+            int range = (i+ len < textLength) ? len+i : textLength;
+            String now = str.substring(i, range);
 
             if(now.equals(prev)){
                 cnt++;
             }else{
-                if(prev.equals("")) {
-                    prev = now;
-                    continue;
-                }
 
                 if(cnt == 1) sb.append(prev);
                 else sb.append(cnt).append(prev);
-
                 cnt = 1;
             }
 
