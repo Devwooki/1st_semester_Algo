@@ -11,34 +11,34 @@ public class 모닝순조부 {
 	static boolean[] selected;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		N = sc.nextInt();
-		R = sc.nextInt();
+		N = 2;
+		R = 3;
 		numbers = new int[R];
 		input = new int[N];
 		selected = new boolean[N];
 		
-		for (int i = 0; i < N; i++) input[i] = sc.nextInt();
+		for (int i = 0; i < N; i++) input[i] = i+1;
 		
-		System.out.println("순열");
-		perm(0);
-		
-		System.out.println("조합");
-		comb(0, 0);
-		
-		System.out.println("부분집합 - 재귀");
-		subset(0);
+//		System.out.println("순열");
+//		perm(0);
+//
+//		System.out.println("조합");
+//		comb(0, 0);
+//
+//		System.out.println("부분집합 - 재귀");
+//		subset(0);
 		
 		System.out.println("부분집합 - 비트");
 		subset();
 		
-		System.out.println("순열 - 비트");
-		perm2(0, 0);
-		
-		System.out.println("순열-Next");
-		nextPerm();
-
-		System.out.println("조합-Next");
-		nextComb();
+//		System.out.println("순열 - 비트");
+//		perm2(0, 0);
+//
+//		System.out.println("순열-Next");
+//		nextPerm();
+//
+//		System.out.println("조합-Next");
+//		nextComb();
 	}
 
 	private static void perm(int cnt) {
