@@ -6,7 +6,7 @@ public class BOJ2668 {
     static int[] graph;
     static boolean[] visited;
     static int N, max = Integer.MIN_VALUE;
-    static PriorityQueue<Integer> pq;
+    static TreeSet<Integer> pq = new TreeSet<>();
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -24,25 +24,33 @@ public class BOJ2668 {
         //bfs를 돌면서 가장 큰 사이클을 발견
         for(int i = 1 ; i <= N ; ++i){
             visited = new boolean[N+1];
-            dfs1(i, 0);
             dfs2(i,i);
         }
-    }
-    //가설 1.
-    //사이클이 가장 큰 것을 찾고, 자기 자신을 가리키는 것 cnt
-    private static void dfs1(int now, int cnt) {
-        if(!visited[graph[now]]) {
-            visited[now] = true;
-            dfs1(graph[now], cnt+1);
+
+        sb.append(pq.size() + "\n");
+
+        for(int value : pq){
+            sb.append(value + "\n");
         }
+        System.out.println(sb);
     }
+    //가설1
+    //가장 큰 사이클을 찾기
 
     //가설 2.
     //사이클의 갯수 파악 - 사이클이 발생하는 번호를 pq에 넣기
-    private static void dfs2(int now, int cnt) {
-        if(!visited[graph[now]]) {
-            visited[now] = true;
-            dfs2(graph[now], cnt+1);
+    private static void dfs2(int now, int start) {
+        //다음 방문할 노드가 안 간 곳이면
+        if(!visited[graph[now]]){
+            //방문 처리 후 다음 노드dfs 실시
+            visited[graph[now]] = true;
+            dfs2(graph[now], start);
+        }
+
+        //다음 방문할 노드가 원점이면 1개의 사이클
+        if(graph[now] == start){
+            //pq.offer(start);
+            pq.add(start);
         }
     }
 
