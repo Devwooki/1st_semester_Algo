@@ -1,7 +1,5 @@
 package study;
 
-import sun.security.util.math.IntegerModuloP;
-
 import java.io.*;
 import java.util.*;
 
