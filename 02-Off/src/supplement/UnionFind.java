@@ -50,7 +50,16 @@ public class UnionFind {
         if(aRoot == bRoot) return false; //두 대표자가 같으면 false
 
         //A를 대표자로 하기 때문에 bRoot의 인덱스 값에 aRoot로
-        p[bRoot] = aRoot;
+//        p[bRoot] = aRoot;
+//        return true;
+
+        //부무가 될 객체의 대소를 비교해서 대표자를 선언한다.
+        //원소값이 작은 쪽으로 합치자
+        if(aRoot > bRoot)
+            p[aRoot] = bRoot;
+        else
+            p[bRoot] = aRoot;
+
         return true;
     }
 }
