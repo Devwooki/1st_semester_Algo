@@ -1,8 +1,10 @@
 package study;
 
+import java.util.Collections;
+import java.util.PriorityQueue;
+
 public class test {
     public static void main(String[] args) {
-        int M =49;
-        System.out.println(Math.ceil((double) 49/10));
+        System.out.println((int) Math.pow(10, -1));
     }
 }
