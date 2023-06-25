@@ -4,7 +4,7 @@ import java.util.*;
 
 
 public class BOJ13549 {
-    static int start, end, result = 0;
+    static int start, end, result = Integer.MAX_VALUE;
     static boolean[] visited = new boolean[100001];
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,22 +21,28 @@ public class BOJ13549 {
     static void bfs(){
         Queue<Loc> q = new LinkedList<>();
         q.add(new Loc(start , 0));
-        visited[start] = true;
 
         while(!q.isEmpty()){
             Loc now = q.poll();
+            visited[now.x] = true;
 
             if(now.x == end){
-                result = now.time;
-                return;
+                result = Math.min(result, now.time);
             }
 
-            if(now.x -1 >= 0 && !visited[now.x -1])  q.offer(new Loc(now.x-1, now.time+1));
-            if(now.x +1 <= 100000 && !visited[now.x+1])  q.offer(new Loc(now.x+1, now.time+1));
-            if((0<= now.x * 2 && now.x <= 100000) && !visited[now.x * 2])  q.offer(new Loc(now.x * 2, now.time));
+            int next1 = now.x-1;
+            int next2 = now.x+1;
+            int next3 = now.x * 2;
+            if(checkRange(next1) && !visited[next1]) q.offer(new Loc(next1, now.time+1));
+            if(checkRange(next2) && !visited[next2]) q.offer(new Loc(next2, now.time+1));
+            if(checkRange(next3) && !visited[next3]) q.offer(new Loc(next3, now.time));
+
         }
     }
 
+    private static boolean checkRange(int x){
+        return ( 0 <= x && x <= 100000);
+    }
     static class Loc{
         int x;
         int time;
