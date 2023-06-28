@@ -77,7 +77,6 @@ public class BOJ21608 {
             map[result[1]][result[0]] = nowStudent;
             return;
         }
-
         map[filter.get(0)[1]][filter.get(0)[0]] = nowStudent;
         return;
     }
