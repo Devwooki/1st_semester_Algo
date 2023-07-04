@@ -87,4 +87,9 @@ class Point{
         this.y = y;
         this.count = count;
     }
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

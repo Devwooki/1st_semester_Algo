@@ -3,13 +3,14 @@ package study;
 import java.io.*;
 import java.util.*;
 
-/*
-한 칸 전진
--> 앞칸에
-*/
 public class BOJ20057 {
-    static int[][] dirInfo = {{-1, 0}, {0,1}, {1, 0}, {0, -1}};
-    static int[] sandValue = {1,1, 7,-1,7, 2,10,0, 0,5,10, 0,0,2};
+    static int[][] dirInfo = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    static int[] sandValue = {
+            1, 1,
+            7, -1, 7,
+            2, 10, 0,
+            0, 5, 10,
+            0, 0, 2};
     static int[] spreadSandAmount;
     static int N, sum;
     static int[][] map;
@@ -21,19 +22,10 @@ public class BOJ20057 {
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
 
-
         for (int i = 0; i < N; i++)
-           map[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+            map[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
         simulataion();
-
-//        for (int i = 0; i < N; i++) {
-//            for (int j = 0; j < N; j++) {
-//                System.out.print(map[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-
         System.out.println(sum);
     }
 
@@ -45,6 +37,7 @@ public class BOJ20057 {
         int dirMove = 1; //현재 방향으로 나아갈 횟수
 
         while (true) {
+
             for (int dirChangeCnt = 0; dirChangeCnt < 2; ++dirChangeCnt) {
                 for (int i = 0; i < dirMove; ++i) {
 
@@ -52,102 +45,109 @@ public class BOJ20057 {
                     now.x += dirInfo[dir][0];
                     now.y += dirInfo[dir][1];
 
+                    //이동한 위치에서 토네이도를 퍼트린다.
+                    spreadSand(now, dir);
+                    //printResult();
+
                     //토네이도는 1,1에 도착하면 소멸한다.
                     if (now.x == 0 && now.y == 0) return;
-
-                    //아닌 경우 모레를 퍼트린다.
-                    spreadSand(now, dir);
                 }
-                dir = (dir+1)%4;
+                dir = (dir + 1) % 4;
             }
             dirMove++;
         }
     }
-
     private static void spreadSand(Loc now, int dir) {
-        //먼지를 퍼트리는 사방탐색은 ㅗ 모양으로 총 4번만 BFS를 실시한다.
-        //맵 범위를 초과한 경우 sum에 +하고 이동한 위치의 모래양에서 제외
-        //그렇지 않은 경우 기존 map에 모래를 합산하며 소수점 첫째 자리에 버림
+        //먼지를 퍼트리는 사방탐색은 y위치에서 ㅗ 모양으로 총 3번만 BFS를 실시
 
-        //현재 위치의 모래 양을 기록
-        int nowSandAmount = map[now.y][now.x];
-        int locAValue = calcSpredSandAmount(nowSandAmount);
+        int locAValue = calcSpredSandAmount(map[now.y][now.x]);//현재 위치의 모래 양을 기준으로 흩날리는 모래 양을 구함
+        //모래를 퍼트렸으니 현재 위치에 모래는 더 이상 없다
+        map[now.y][now.x] = 0;
 
-        //첫 사방탐색을 수행한다.
-        //사방탐색 수행하기 전, 모래가 1%만 이동하는 곳을 쉽게 연산하기 위해 이전 위치로 돌아간다.
+        //사방탐색 수행하기 전, 모래가 1%만 흩어지는 곳을 연산
+        //이전 위치에서 수행한다.
         now.x -= dirInfo[dir][0];
         now.y -= dirInfo[dir][1];
 
         int searchDir = 3;
         int sandValueCnt = 0;
-        for(int i = 0 ; i < 3 ; i+=2){
-            int nearX = now.x + dirInfo[(searchDir + dir + i)%4][0];
-            int nearY = now.y + dirInfo[(searchDir + dir + i)%4][1];
+        for (int i = 0; i < 3; i += 2) {
+            int nearX = now.x + dirInfo[(searchDir + dir + i) % 4][0];
+            int nearY = now.y + dirInfo[(searchDir + dir + i) % 4][1];
 
-            //범위를 벗어나면 sum에다가 더해주자
-            if(!checkRange(nearX, nearY)) {
-                //소숫점 아래는 버린다
-                sum += spreadSandAmount[sandValueCnt++];
-            }else{//모래가 흩어졌으니 모래 양을 더한다.
-                map[nearY][nearX] += spreadSandAmount[sandValueCnt++];
-            }
+            //범위 초과 -> 밖으로 나간 모래에 합산
+            if (!checkRange(nearX, nearY)) sum += spreadSandAmount[sandValueCnt++];
+            //범위 내부 -> 해당 위치의 모래에 합산
+            else map[nearY][nearX] += spreadSandAmount[sandValueCnt++];
         }
 
-        //현재 위치 부터 ㅗ 방향만큼 탐색 1번씩 실시
+        //전방범위의 ㅗ 방향으로 3방 탐색 실시 + 큐에 넣어서 1번만 범위 확장
         now.x += dirInfo[dir][0];
         now.y += dirInfo[dir][1];
         Queue<Loc> q = new LinkedList<>();
         q.offer(now);
-        //while(!q.isEmpty()){
-        while(sandValueCnt!=14){
+
+        while (sandValueCnt != 14) {
             Loc next = q.poll();
 
-            for(int i = 0 ; i < 3 ; ++i){
-                int nearX = now.x + dirInfo[(searchDir + dir + i)%4][0];
-                int nearY = now.y + dirInfo[(searchDir + dir + i)%4][1];
+            for (int i = 0; i < 3; ++i) {
+                int nearX = next.x + dirInfo[(searchDir + dir + i) % 4][0];
+                int nearY = next.y + dirInfo[(searchDir + dir + i) % 4][1];
 
-                //범위를 벗어나면 sum에다가 더해주자
-                if(!checkRange(nearX, nearY)) {
-                    //소숫점 아래는 버린다
-                    sum += spreadSandAmount[sandValueCnt++];
-                }else{//모래가 흩어졌으니 모래 양을 더한다.
-                    //sandValue가 0이면 방문해서 계산한 곳이니 패스
-                    if(sandValue[sandValueCnt] == 0){
+                //범위 초과 -> 밖으로 나간 모래에 합산
+                if (!checkRange(nearX, nearY)) sum += spreadSandAmount[sandValueCnt++];
+                //범위 내부 -> 해당 위치의 모래에 합산
+                else {
+                    //sandValue == 0은 이미 방문한 위치니까 건너뛴다
+                    //sandValueCnt++ 가 아닌 이유 -> if문 검사할 때 마다 sandValueCnt가 증가하기 때문
+                    if (sandValue[sandValueCnt] == 0) {
                         sandValueCnt++;
                         continue;
                     }
-
-                    //위치별 모래를 갱신해주고 큐에 다음 위치를 넣어준다.
                     map[nearY][nearX] += spreadSandAmount[sandValueCnt++];
-                    q.offer(new Loc(nearX, nearY));
                 }
+                //ㅗ 으로 3방 탐색할 때 이동 할 위치가 범위를 벗어나도 확장해야하므로 큐에 넣는다.
+                q.offer(new Loc(nearX, nearY));
             }
         }
 
-        //모래를 퍼트렸으니 현재 위치에 모래는 더 이상 없다
-        map[now.y][now.x] = 0;
-
         //a지점에 모래는 퍼트리고 남은 모래 만큼 더해진다.
         //a지점도 map의 범위 유무를 체크해서 값을 계산해주자
-        if(!checkRange( now.x + dirInfo[dir][0], now.y += dirInfo[dir][1]))
+        int aLocX = now.x + dirInfo[dir][0];
+        int aLocY = now.y + dirInfo[dir][1];
+
+        if (!checkRange(aLocX, aLocY))
             sum += locAValue;
-        else map[now.y + dirInfo[dir%4][1]][now.x + dirInfo[dir%4][0]] += locAValue;
+        else map[aLocY][aLocX] += locAValue;
     }
 
-    private static int calcSpredSandAmount(int nowSandAmount){
+    //이동한 위치에서 퍼트릴 모래의 양을 미리 계산하는 메소드
+    private static int calcSpredSandAmount(int nowSandAmount) {
         int sum = 0;
         spreadSandAmount = new int[sandValue.length];
 
-        for(int i = 0 ; i < sandValue.length ; ++i){
-            if(sandValue[i] == -1) continue;
-            spreadSandAmount[i] = (int) Math.floor(nowSandAmount * ((double) sandValue[i] /100));
+        for (int i = 0; i < sandValue.length; ++i) {
+            if (sandValue[i] == -1) continue; // y위치는 생략한다.
+            spreadSandAmount[i] = (int) Math.floor(nowSandAmount * ((double) sandValue[i] / 100));
             sum += spreadSandAmount[i];
         }
 
-        return nowSandAmount-sum;
+        return nowSandAmount - sum;
     }
-    private static boolean checkRange(int x, int y){
-        return ( 0 <= x && x < N && 0 <= y && y < N);
+
+    //좌표 유효성 검사 메소드
+    private static boolean checkRange(int x, int y) {
+        return (0 <= x && x < N && 0 <= y && y < N);
+    }
+
+    static void printResult(){
+        for (int q = 0; q < N; q++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(map[q][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("\n==================\n");
     }
 }
 

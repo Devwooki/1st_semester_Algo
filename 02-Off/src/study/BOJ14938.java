@@ -1,7 +1,5 @@
 package study;
 
-import com.sun.istack.internal.FinalArrayList;
-
 import java.io.*;
 import java.util.*;
 
