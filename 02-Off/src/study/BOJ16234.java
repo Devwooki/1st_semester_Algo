@@ -1,8 +1,13 @@
 package study;
 
+<<<<<<< Updated upstream
 import java.io.*;
+=======
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+>>>>>>> Stashed changes
 import java.util.*;
-import java.util.List;
 
 /*
 - 국경을 공유하는 두나라 인구차이가 L이상 R이하면 국경선 하루 연다
@@ -16,7 +21,7 @@ public class BOJ16234 {
     static int[][] map;
     static int[][] dir = {{1,0},{0,1},{-1,0},{0,-1}};
     static boolean[][] visited;
-    static List<Point> union;
+     static List<Point> union;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());

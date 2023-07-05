@@ -89,7 +89,10 @@ class Point{
     }
 
     public Point(int x, int y) {
+<<<<<<< Updated upstream
         this.x = x;
         this.y = y;
+=======
+>>>>>>> Stashed changes
     }
 }
