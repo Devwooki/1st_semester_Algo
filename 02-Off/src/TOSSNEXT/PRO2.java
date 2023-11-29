@@ -11,7 +11,7 @@ public class PRO2 {
     public static void main(String[] args) throws IOException{
         ArrayList<Integer>[] list = new ArrayList[5];
         for(int i = 0 ; i < 5 ; ++i){
-            list[i] = new ArrayList<>();
+            list[i] = new java.util.ArrayList<>();
         }
 
         list[0].add(1);

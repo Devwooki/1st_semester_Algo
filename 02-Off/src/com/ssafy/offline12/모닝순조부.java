@@ -27,24 +27,24 @@ public class 모닝순조부 {
 		System.out.println(totalCnt + "\n");
 		totalCnt = 0;
 		
-		nPrBit(0, 0);
-		System.out.println(totalCnt + "\n");
-		totalCnt = 0;
-		
+//		nPrBit(0, 0);
+//		System.out.println(totalCnt + "\n");
+//		totalCnt = 0;
+//
 		nCr(0, 0);
 		System.out.println(totalCnt + "\n");
 		totalCnt = 0;
-		
-		subsetBit();
-		System.out.println();
-		subsetRec(0);
-		System.out.println();
-		
-		doNP();
-		System.out.println();
-		
-		doNPC();
-		System.out.println();
+//
+//		subsetBit();
+//		System.out.println();
+//		subsetRec(0);
+//		System.out.println();
+//
+//		doNP();
+//		System.out.println();
+//
+//		doNPC();
+//		System.out.println();
 	}
 	
 	static void nPr(int cnt) {
