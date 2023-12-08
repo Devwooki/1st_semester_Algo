@@ -84,7 +84,8 @@ public class 아침순열조합부분 {
 		isSelected[cnt] = false;
 		subsetrec(cnt+1);
 	}
-	
+
+	//중복 조합
 	private static void nHr(int cnt, int start) {
 		if(cnt == R ) {
 			totalCnt++;
@@ -98,7 +99,8 @@ public class 아침순열조합부분 {
 		}
 		
 	}
-	
+
+	//조합
 	private static void nCr(int cnt, int start) {
 		if(cnt == R) {
 			totalCnt++;
@@ -113,7 +115,7 @@ public class 아침순열조합부분 {
 	}
 	
 	
-	
+	//순열
 	private static void nPIr(int cnt) {
 		if(cnt == R ) {
 			totalCnt++;
@@ -127,6 +129,7 @@ public class 아침순열조합부분 {
 		}
 		
 	}
+	//중복 순열
 	private static void nPr(int cnt) {
 		if(cnt == R ) {
 			totalCnt++;
