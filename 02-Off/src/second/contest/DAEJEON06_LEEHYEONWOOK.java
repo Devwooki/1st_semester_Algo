@@ -1,46 +1,78 @@
 package second.contest;
 
-import java.net.*;
+import java.util.*;
 import java.io.*;
 
 public class DAEJEON06_LEEHYEONWOOK {
+	static int wheels[][];
 
-	// 닉네임을 사용자에 맞게 변경해 주세요.
-	static final String NICKNAME = "DAEJEON06_LEEHYEONWOOK";
-	
-	// 일타싸피 프로그램을 로컬에서 실행할 경우 변경하지 않습니다.
-	static final String HOST = "127.0.0.1";
-
-	// 일타싸피 프로그램과 통신할 때 사용하는 코드값으로 변경하지 않습니다.
-	static final int PORT = 1447;
-	static final int CODE_SEND = 9901;
-
-	public static void main(String[] args) {
-
-		Socket socket = null;
-		byte[] bytes = new byte[1024];
-
-		try {
-			socket = new Socket();
-			System.out.println("Trying Connect: " + HOST + ":" + PORT);
-			socket.connect(new InetSocketAddress(HOST, PORT));
-			System.out.println("Connected: " + HOST + ":" + PORT);
-
-			InputStream is = socket.getInputStream();
-			OutputStream os = socket.getOutputStream();
-
-			String send_data = CODE_SEND + "/" + NICKNAME + "/";
-			bytes = send_data.getBytes("UTF-8");
-			os.write(bytes);
-			os.flush();
-			System.out.println("Ready to play!\n--------------------");
-
-			os.close();
-			is.close();
-			socket.close();
-			System.out.println("Connection Closed.\n--------------------");
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		wheels = new int[4][8]; // 톱니바퀴 상태 입력
+		for (int i = 0; i < 4; i++) {
+			String s = br.readLine();
+			for (int j = 0; j < 8; j++) {
+				wheels[i][j] = s.charAt(j) - '0';
+			}
 		}
+
+		int K = Integer.parseInt(br.readLine());
+		for (int i = 0; i < K; i++) {
+			st = new StringTokenizer(br.readLine());
+			int n = Integer.parseInt(st.nextToken()) - 1; // 회전할 톱니 번호
+			int d = Integer.parseInt(st.nextToken()); // 회전 방향
+			int isTurn[] = new int[4]; // 회전 여부 저장
+			isTurn[n] = d;
+
+			// n 왼쪽
+			for (int j = 0; n != 0 && j < n; j++) {
+				if (wheels[n - j][6] != wheels[n - j - 1][2])
+					isTurn[n - j - 1] = j % 2 == 0 ? -d : d; // j가 짝수면 다른 방향, 홀수면 같은 방향
+				else
+					break;
+			}
+
+			// n 오른쪽
+			for (int j = 0; n != 3 && j < 4 - n - 1; j++) {
+				if (wheels[n + j][2] != wheels[n + j + 1][6])
+					isTurn[n + j + 1] = j % 2 == 0 ? -d : d; // j가 짝수면 다른 방향, 홀수면 같은 방향
+				else
+					break;
+			}
+			System.out.println(Arrays.toString(isTurn));
+			// 회전
+			for (int j = 0; j < 4; j++) {
+				if (isTurn[j] == 1) // 시계방향 회전
+					goTurn(j);
+				else if (isTurn[j] == -1) // 반시계방향 회전
+					goBack(j);
+			}
+		}
+
+		int result = 0;    // 점수
+		for (int i = 0; i < 4; i++) {
+			System.out.print(wheels[i][0] + " ");
+			if (wheels[i][0] == 1)
+				result += Math.pow(2, i);    // i번째 톱니바퀴 점수 : 2^i
+		}
+		System.out.println(result);
+	}
+
+	// 반시계방향
+	private static void goBack(int n) {
+		int temp = wheels[n][0];
+		for (int i = 0; i <= 6; i++)
+			wheels[n][i] = wheels[n][i + 1];
+		wheels[n][7] = temp;
+	}
+
+	// 시계방향
+	private static void goTurn(int n) {
+		int temp = wheels[n][7];
+		for (int i = 6; i >= 0; i--)
+			wheels[n][i + 1] = wheels[n][i];
+		wheels[n][0] = temp;
 	}
 }
+
