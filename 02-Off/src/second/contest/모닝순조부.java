@@ -11,7 +11,7 @@ public class 모닝순조부 {
 	static boolean[] selected;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		N = 2;
+		N = 5;
 		R = 3;
 		numbers = new int[R];
 		input = new int[N];
@@ -19,8 +19,8 @@ public class 모닝순조부 {
 		
 		for (int i = 0; i < N; i++) input[i] = i+1;
 		
-//		System.out.println("순열");
-//		perm(0);
+		System.out.println("순열");
+		perm(0);
 //
 //		System.out.println("조합");
 //		comb(0, 0);

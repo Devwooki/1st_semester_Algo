@@ -10,7 +10,7 @@ public class 순조부 {
     static StringBuilder sb = new StringBuilder();
     static int[] inputs, results;
     static boolean[] visited;
-
+    static int totalCnt = 0;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -30,11 +30,12 @@ public class 순조부 {
 //        nPr(0);
 //        System.out.print(sb);
 //
-//        sb.setLength(0);
-//        System.out.println("====== 조합 ======");
-//        nCr(0, 0);
-//        System.out.print(sb);
-//
+        sb.setLength(0);
+        System.out.println("====== 조합 ======");
+        nCr(0, 0);
+        System.out.print(sb);
+        System.out.println(totalCnt);
+
 //        sb.setLength(0);
 //        System.out.println("====== 중복 순열 ======");
 //        중복순열(0);
@@ -44,10 +45,10 @@ public class 순조부 {
 //        System.out.println("====== 중복 조합 ======");
 //        중복조합(0, 0);
 //        System.out.print(sb);
-        부분집합(0);
-        System.out.println(sb);
-
-        부분집합비트(0);
+//        부분집합(0);
+//        System.out.println(sb);
+//
+//        부분집합비트(0);
     }
 
     public static void nPr(int cnt){
@@ -73,6 +74,7 @@ public class 순조부 {
 
     public static void nCr(int cnt, int start){
         if(cnt == M){
+            totalCnt++;
             for(int i = 0; i < M ; ++i){
                 sb.append(results[i] + " ");
             }
