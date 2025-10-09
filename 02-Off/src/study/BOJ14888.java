@@ -24,7 +24,7 @@ public class BOJ14888 {
         //연산자를 순서대로 정렬한다.
         for(int i = 0 ; i < 4 ; ++i){
             int temp = Integer.parseInt(st.nextToken());
-            while(temp-->0) operation[cnt++] = i;
+            while(temp-- > 0) operation[cnt++] = i;
         }
 
         int maxV = Integer.MIN_VALUE;
